@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 style="text-align: center;">my posts</h1>
+    {% for post in my_posts %}
+        <hr size="10">
+        <ul style="line-height: 10px;">
+            <li>
+                <a href="{% url 'article-detail' post.pk %}">
+                    <p style="font-weight: bold;">
+                        {{ post.title }}
+                    </p>
+                    {% if user.is_authenticated %}
+                        {% if user.id == post.author.id %}
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle"
+                                   href="#"
+                                   id="navbarDropdown"
+                                   role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    action
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{% url 'update_post' post.pk %}">edit</a>
+                                    <a class="dropdown-item" href="{% url 'delete_post' post.pk %}">delete</a>
+                                </ul>
+                            </div>
+                            <hr>
+                        {% endif %}
+                    {% endif %}
+                </a>
+                <p>
+                    author : {{ post.author.first_name }} {{ post.author.last_name }} / date : {{ post.post_date }}
+                </p>
+                <a href="{% url 'category' post.category|slugify %}"># {{ post.category }}</a>
+                <hr>
+                <p style="line-height: 20px;">
+                    {{ post.body|slice:":500" }}
+                </p>
+            </li>
+        </ul>
+        <hr size="10">
+    {% endfor %}
+    {{ cat_menu }}
+{% endblock content %}

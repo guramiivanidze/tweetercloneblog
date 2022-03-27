@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+    <a href="{% url 'home' %}" class="btn btn-secondary">back to list</a>
+    {% if category_posts %}
+        <h1 style="text-align: center;">you are watching {{ cats }} Category posts</h1>
+        {% for post in category_posts %}
+            <hr size="10">
+            <ul style="line-height: 10px;">
+                <li>
+                    <a href="{% url 'article-detail' post.pk %}">
+                        <p style="font-weight: bold;">
+                            {{ post.title }}
+                        </p>
+                    </a>
+                    <p>
+                        author : {{ post.author.first_name }} {{ post.author.last_name }} / date : {{ post.post_date }}
+                    </p>
+                    <hr>
+                    <p style="line-height: 20px;">
+                        {{ post.body|slice:":500" }}
+                    </p>
+                    {% if user.is_authenticated %}
+                        <hr>
+                        <a href="{% url 'update_post' post.pk %}">edit</a>
+                        /
+                        <a href="{% url 'delete_post' post.pk %}">delete</a>
+                    {% endif %}
+                </li>
+            </ul>
+            <hr size="10">
+        {% endfor %}
+    {% else %}
+        the category not exist
+    {% endif %}
+{% endblock content %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ post.title_tag }}
+{% endblock title %}
+{% block content %}
+    <a href="{% url 'home' %}" class="btn btn-secondary">back</a>
+    {% if user.is_authenticated %}
+        {% if user.id == post.author.id %}
+            <div style="padding-top: 10px;" class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"
+                   href="#"
+                   id="navbarDropdown"
+                   role="button"
+                   data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    action
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'update_post' post.pk %}">edit</a>
+                    <a class="dropdown-item" href="{% url 'delete_post' post.pk %}">delete</a>
+                </ul>
+            </div>
+            <hr>
+        {% endif %}
+    {% endif %}
+    <h1>{{ post.title }}</h1>
+    <h1>post author user id : {{ post.author.id }}</h1>
+    <h1>loged in user id: {{ user.id }}</h1>
+    <hr>
+    <small >By:  {{ post.author.first_name }} / date: {{ post.post_date }}</small>
+    <hr>
+    <br />
+    {{ post.body|safe }}
+    <br>
+    <div style="padding-top: 20px;">
+        <form action="{% url 'like_post' post.pk %}" method="POST">
+            {% csrf_token %}
+            <button type="submit"
+                    name="post_id"
+                    value="{{ post.id }}"
+                    class="btn btn-primary btn-sm">like </button>
+                    - {{ total_likes }} likes
+        </form>
+    </div>
+{% endblock content %}

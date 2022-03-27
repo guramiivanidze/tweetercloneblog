@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}
+    Create post
+{% endblock title %}
+{% block content %}
+    <a href="{% url 'home' %}" class="btn btn-secondary">back</a>
+    {% if user.is_authenticated %}
+        <h1>add post</h1>
+        <div class="form-group">
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-primary">post</button>
+            </form>
+        </div>
+    {% else %}
+        you are not allowd
+    {% endif %}
+{% endblock content %}
