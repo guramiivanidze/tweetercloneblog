@@ -35,7 +35,7 @@
                 <a href="{% url 'category' post.category|slugify %}"># {{ post.category }}</a>
                 <hr>
                 <p style="line-height: 20px;">
-                    {{ post.body|slice:":500" }}
+                    {{ post.body|slice:":500"|safe }}
                 </p>
             </li>
         </ul>

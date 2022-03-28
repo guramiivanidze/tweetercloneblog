@@ -25,7 +25,7 @@
     {% endif %}
     <h1>{{ post.title }}</h1>
     <h1>post author user id : {{ post.author.id }}</h1>
-    <h1>loged in user id: {{ user.id }}</h1>
+    <h1>loged in user id: {{ user }}</h1>
     <hr>
     <small >By:  {{ post.author.first_name }} / date: {{ post.post_date }}</small>
     <hr>
@@ -35,11 +35,26 @@
     <div style="padding-top: 20px;">
         <form action="{% url 'like_post' post.pk %}" method="POST">
             {% csrf_token %}
-            <button type="submit"
-                    name="post_id"
-                    value="{{ post.id }}"
-                    class="btn btn-primary btn-sm">like </button>
-                    - {{ total_likes }} likes
+            {% if user.is_authenticated %}
+                {% if liked %}
+                    <button type="submit"
+                            name="post_id"
+                            value="{{ post.id }}"
+                            class="btn btn-danger btn-sm">Unlike</button>
+                {% else %}
+                    <button type="submit"
+                            name="post_id"
+                            value="{{ post.id }}"
+                            class="btn btn-primary btn-sm">like</button>
+                {% endif %}
+                
+            {% else %}
+                <small>
+                    <a href="{% url 'login' %}">Login</a>
+                    to like
+                </small>
+            {% endif %}
+            - {{ total_likes }} likes
         </form>
     </div>
 {% endblock content %}
